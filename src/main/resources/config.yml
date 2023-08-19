@@ -1,0 +1,21 @@
+###########################################################################
+#                        MasterLink Config
+#                        Made by Master_
+###########################################################################
+
+
+#The bot is reguire to be used fine, you must create a bot for that, and activate server member intent ; others intents are not required
+
+discord:
+  # Token require to connect to discord (go to https://discord.com/developers/applications)
+  Token: ""
+    # the id of the guild where the bot is
+  Guild: ""
+    # the id of the channel where the bot will send the log messages
+  Log-channel: ""
+  # if you want to ban the user from server when he is banned from discord
+  # value: true or false
+  LikedBan: true
+
+prefix: "&3[&MasterLink&3] &8>>> &3"
+prefix-discord: "[MasterLink] >>> "

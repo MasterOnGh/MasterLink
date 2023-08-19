@@ -1,0 +1,20 @@
+name: MasterLink
+version: '${project.version}'
+main: fr.masterofgame09.masterlink.DisLink
+load: STARTUP
+author: [Master_]
+website: https://masterproject.tech/
+commands:
+  link:
+    permission-message: "&cYou don't have the permission to use this command"
+    description: Link your account to your discord account
+    permission: dislink.link
+  unlink:
+    permission-message: "&cYou don't have the permission to use this command"
+    description: Unlink your account from your discord account
+    permission: dislink.unlink
+
+
+
+
+
