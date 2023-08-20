@@ -20,10 +20,11 @@ The plugin uses JDA version 5.0.0-beta.11, and it based on paper 1.16.5 but work
 ### How it works?
 
 The plugin uses a simple system :
-- When a player joins the server, he can link his account with the server, he needs to run the command /link <'pseudo'> for get a code liked with his pseudo
+- When a player joins the server, he can link his account with the server, he needs to run the command /link <'pseudo'> on discord for get a code liked with his pseudo
 - In game, the player runs the command /link <'code'> for links his account with the server
-- In discord, the player can retrieve a player with command /retrieve <'pseudo'>, if work only if the player has been linked
+- In discord, the player can retrieve a player with command /retrieve <'pseudo'>, works only if the player has been linked
 - In game, the player can run the command /unlink to discard his link with the server
+- On discord, if you ban a player who is linked in game, and if you have the option activated, he will be automatically banned
 
 
 
