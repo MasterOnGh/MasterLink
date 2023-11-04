@@ -1,8 +1,8 @@
 name: MasterLink
 version: '${project.version}'
-main: fr.masterofgame09.masterlink.DisLink
+main: fr.masterofgame09.masterlink.Masterlink
 load: STARTUP
-author: [Master_]
+author: Master_
 website: https://masterproject.tech/
 commands:
   link:
