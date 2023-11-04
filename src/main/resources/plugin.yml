@@ -1,6 +1,6 @@
 name: MasterLink
 version: '${project.version}'
-main: fr.masterofgame09.masterlink.Masterlink
+main: fr.masterofgame09.masterlink.MasterLink
 load: STARTUP
 author: Master_
 website: https://masterproject.tech/
