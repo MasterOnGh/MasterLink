@@ -1,6 +1,6 @@
 package fr.masterofgame09.masterlink.commands;
 
-import fr.masterofgame09.masterlink.DisLink;
+import fr.masterofgame09.masterlink.MasterLink;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,15 +13,15 @@ public class LinkCommand extends ListenerAdapter implements CommandExecutor {
 
     private String url = "jdbc:sqlite:plugins/MasterLink/data.db";
 
-    private DisLink disLink;
-    public LinkCommand(DisLink disLink) {
-        this.disLink = disLink;
+    private MasterLink masterLink;
+    public LinkCommand(MasterLink masterLink) {
+        this.masterLink = masterLink;
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if(args.length != 1){
-            sender.sendMessage(disLink.getConfig().getString("prefix").replace("&", "§") + "You must enter the verification code !");
+            sender.sendMessage(masterLink.getConfig().getString("prefix").replace("&", "§") + "You must enter the verification code !");
             return false;
         }
         try(Connection connection = DriverManager.getConnection(url)){
@@ -34,7 +34,7 @@ public class LinkCommand extends ListenerAdapter implements CommandExecutor {
                 long id = rs.getLong("id");
                 String name_ds = rs.getString("name_ds");
 
-                sender.sendMessage(disLink.getConfig().getString("prefix").replace("&", "§") + "You are successfully linked !");
+                sender.sendMessage(masterLink.getConfig().getString("prefix").replace("&", "§") + "You are successfully linked !");
 
                 PreparedStatement psmt2 = connection.prepareStatement("INSERT INTO link_id(id, name_mc, name_ds, date) values (?, ?, ?, ?)");
 
@@ -51,7 +51,7 @@ public class LinkCommand extends ListenerAdapter implements CommandExecutor {
                 psmt3.executeUpdate();
 
             }else{
-                sender.sendMessage(disLink.getConfig().getString("prefix").replace("&", "§") + "You haven't wait a link or the verification code is wrong !");
+                sender.sendMessage(masterLink.getConfig().getString("prefix").replace("&", "§") + "You haven't wait a link or the verification code is wrong !");
             }
 
         } catch (SQLException e) {

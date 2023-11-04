@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-public final class DisLink extends JavaPlugin {
+public final class MasterLink extends JavaPlugin {
 
 
 

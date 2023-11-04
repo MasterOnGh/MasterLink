@@ -1,6 +1,6 @@
 package fr.masterofgame09.masterlink.commands;
 
-import fr.masterofgame09.masterlink.DisLink;
+import fr.masterofgame09.masterlink.MasterLink;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,16 +13,16 @@ public class UnlinkCommand implements CommandExecutor {
 
     private String url = "jdbc:sqlite:plugins/MasterLink/data.db";
 
-    private DisLink disLink;
-    public UnlinkCommand(DisLink disLink) {
-        this.disLink = disLink;
+    private MasterLink masterLink;
+    public UnlinkCommand(MasterLink masterLink) {
+        this.masterLink = masterLink;
     }
 
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if(!(sender instanceof Player)){
-            sender.sendMessage(disLink.getConfig().getString("prefix").replace("&", "§") + "You must be a player !");
+            sender.sendMessage(masterLink.getConfig().getString("prefix").replace("&", "§") + "You must be a player !");
             return false;
         }
 
@@ -34,10 +34,10 @@ public class UnlinkCommand implements CommandExecutor {
                 PreparedStatement psmt2 = connection.prepareStatement("DELETE FROM link_id WHERE name_mc = ?");
                 psmt2.setString(1, sender.getName());
                 psmt2.executeUpdate();
-                sender.sendMessage(disLink.getConfig().getString("prefix").replace("&", "§") + "You are successfully unlinked !");
+                sender.sendMessage(masterLink.getConfig().getString("prefix").replace("&", "§") + "You are successfully unlinked !");
             }else{
 
-                sender.sendMessage(disLink.getConfig().getString("prefix").replace("&", "§") + "You haven't link !");
+                sender.sendMessage(masterLink.getConfig().getString("prefix").replace("&", "§") + "You haven't link !");
             }
 
 

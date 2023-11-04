@@ -1,6 +1,6 @@
 package fr.masterofgame09.masterlink.bot;
 
-import fr.masterofgame09.masterlink.DisLink;
+import fr.masterofgame09.masterlink.MasterLink;
 import fr.masterofgame09.masterlink.commands.LinkCommand;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -15,9 +15,9 @@ public class BotConnection {
 
 
 
-    public BotConnection(DisLink disLink) throws LoginException {
+    public BotConnection(MasterLink masterLink) throws LoginException {
 
-        DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(disLink.getConfig().getString("discord.Token"));
+        DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(masterLink.getConfig().getString("discord.Token"));
 
         builder.setActivity(Activity.playing("By masterproject.tech"));
 
@@ -28,7 +28,7 @@ public class BotConnection {
         builder.setChunkingFilter(ChunkingFilter.ALL);
 
         ShardManager shardManager = builder.build();
-        shardManager.addEventListener(new BotListener(disLink), new LinkCommand(disLink));
+        shardManager.addEventListener(new BotListener(masterLink), new LinkCommand(masterLink));
 
 
     }

@@ -1,7 +1,5 @@
 package fr.masterofgame09.masterlink.db;
 
-import fr.masterofgame09.masterlink.DisLink;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

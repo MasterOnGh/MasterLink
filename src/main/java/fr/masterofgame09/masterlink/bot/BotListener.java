@@ -1,6 +1,6 @@
 package fr.masterofgame09.masterlink.bot;
 
-import fr.masterofgame09.masterlink.DisLink;
+import fr.masterofgame09.masterlink.MasterLink;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.guild.GuildBanEvent;
@@ -25,10 +25,10 @@ import java.util.logging.Level;
 
 public class BotListener extends ListenerAdapter {
     private final String url = "jdbc:sqlite:plugins/MasterLink/data.db";
-    private final DisLink disLink;
+    private final MasterLink masterLink;
 
-    public BotListener(DisLink disLink) {
-        this.disLink = disLink;
+    public BotListener(MasterLink masterLink) {
+        this.masterLink = masterLink;
 
     }
 
@@ -59,7 +59,7 @@ public class BotListener extends ListenerAdapter {
         }if (name.equals("server")) {
             EmbedBuilder builder = new EmbedBuilder()
                     .setTitle("Server Information")
-                    .setDescription("Information about the server\n\n`ONLINE PLAYER` : " + disLink.getServer().getOnlinePlayers().size())
+                    .setDescription("Information about the server\n\n`ONLINE PLAYER` : " + masterLink.getServer().getOnlinePlayers().size())
                     .setTimestamp(event.getTimeCreated());
             event.replyEmbeds(builder.build()).queue();
             return;
@@ -79,7 +79,7 @@ public class BotListener extends ListenerAdapter {
                 psmt.setString(1, String.valueOf(id));
                 ResultSet rs = psmt.executeQuery();
                 if(rs.next()){
-                    event.reply(disLink.getConfig().getString("prefix-discord") + " you already have a link").setEphemeral(true).queue();
+                    event.reply(masterLink.getConfig().getString("prefix-discord") + " you already have a link").setEphemeral(true).queue();
                     return;
                 }
 
@@ -90,7 +90,7 @@ public class BotListener extends ListenerAdapter {
                 psmt.setString(1, String.valueOf(id));
                 rs = psmt.executeQuery();
                 if(rs.next()){
-                    event.reply(disLink.getConfig().getString("prefix-discord") + " you already have a link request, please wait for the expiration").setEphemeral(true).queue();
+                    event.reply(masterLink.getConfig().getString("prefix-discord") + " you already have a link request, please wait for the expiration").setEphemeral(true).queue();
                     return;
                 }
 
@@ -103,7 +103,7 @@ public class BotListener extends ListenerAdapter {
                 psmt.setString(4, String.valueOf(CodeGenerate));
                 psmt.executeUpdate();
 
-                event.reply(disLink.getConfig().getString("prefix-discord") + " for accept the link, please do `/link " + CodeGenerate + "` in the server").setEphemeral(true).queue();
+                event.reply(masterLink.getConfig().getString("prefix-discord") + " for accept the link, please do `/link " + CodeGenerate + "` in the server").setEphemeral(true).queue();
 
                 ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
@@ -115,13 +115,13 @@ public class BotListener extends ListenerAdapter {
                         psmt1.setString(1, String.valueOf(id));
                         ResultSet rs1 = psmt1.executeQuery();
                         if (rs1.next()) {
-                            event.reply(disLink.getConfig().getString("prefix-discord") + " The link has expired").setEphemeral(true).queue();
+                            event.getChannel().sendMessage(masterLink.getConfig().getString("prefix-discord") + " The link has expired").queue();
                             psmt1.executeUpdate("DELETE FROM wait_link WHERE id = " + id);
                             psmt1.executeUpdate();
 
                         }
                     } catch (SQLException e) {
-                        disLink.getLogger().log(Level.SEVERE, e.getSQLState());
+                        masterLink.getLogger().log(Level.SEVERE, e.getSQLState());
                     }
                 };
 
@@ -146,12 +146,12 @@ public class BotListener extends ListenerAdapter {
                 psmt.setString(1, pseudo);
                 ResultSet rs = psmt.executeQuery();
                 if(rs.next()){
-                    event.reply(disLink.getConfig().getString("prefix-discord") + " The discord account linked to " + pseudo + " is <@" + rs.getString("id") + ">").queue();
+                    event.reply(masterLink.getConfig().getString("prefix-discord") + " The discord account linked to " + pseudo + " is <@" + rs.getString("id") + ">").queue();
                 }else{
-                    event.reply(disLink.getConfig().getString("prefix-discord") + " The minecraft account " + pseudo + " is not linked").queue();
+                    event.reply(masterLink.getConfig().getString("prefix-discord") + " The minecraft account " + pseudo + " is not linked").queue();
                 }
             } catch (SQLException e) {
-                event.reply(disLink.getConfig().getString("prefix-discord") + " An error has occurred").queue();
+                event.reply(masterLink.getConfig().getString("prefix-discord") + " An error has occurred").queue();
                 throw new RuntimeException(e);
             }
         }
@@ -167,18 +167,18 @@ public class BotListener extends ListenerAdapter {
                 psmt = conn.prepareStatement("DELETE FROM link_id WHERE id = ?");
                 psmt.setString(1, String.valueOf(event.getUser().getIdLong()));
                 psmt.executeUpdate();
-                if(Objects.equals(disLink.getConfig().getString("discord.LikedBan"), "false")){
+                if(Objects.equals(masterLink.getConfig().getString("discord.LikedBan"), "false")){
                     return;
                 }else{
                     String commandban = "ban " + rs.getString("name_mc");
-                    disLink.getServer().dispatchCommand(disLink.getServer().getConsoleSender(),commandban);
+                    masterLink.getServer().dispatchCommand(masterLink.getServer().getConsoleSender(),commandban);
                     EmbedBuilder builder = new EmbedBuilder()
                             .setTitle("BAN LOG")
                             .setDescription("The user : **" + event.getUser().getName() + "** has been banned" +
                                     "\n\n" +
                                     "The user is linked with the minecraft account : **" + rs.getString("name_mc") + "** and is also banned on the server")
                             .setFooter("For deasative the linked ban go to config");
-                    Objects.requireNonNull(event.getGuild().getChannelById(TextChannel.class, Objects.requireNonNull(disLink.getConfig().getString("discord.Log-channel")))).sendMessageEmbeds(builder.build()).queue();
+                    Objects.requireNonNull(event.getGuild().getChannelById(TextChannel.class, Objects.requireNonNull(masterLink.getConfig().getString("discord.Log-channel")))).sendMessageEmbeds(builder.build()).queue();
                 }
             }
         } catch (SQLException e) {
